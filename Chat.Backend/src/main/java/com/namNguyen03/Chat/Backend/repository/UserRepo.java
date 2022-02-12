@@ -18,9 +18,22 @@ import com.namNguyen03.Chat.Backend.model.User;
 public interface UserRepo extends JpaRepository<User, Integer> {
 
 	/**
-	 * @param username
-	 * @return
+	 * Retrieves an user by its username.
+	 *
+	 * @param username must not be {@literal null}.
+	 * @return the user with the given id or {@literal Optional#empty()} if none found.
+	 *
 	 */
 	Optional<User> findByUsername(String username);
+
+	/**
+	 * Returns whether an User with the given username exists.
+	 *
+	 * @param username must not be {@literal null}.
+	 * @return {@literal true} if an user with the given username exists, {@literal false} otherwise.
+	 *
+	 */
+	boolean existsByUsername(String username);
+
 
 }

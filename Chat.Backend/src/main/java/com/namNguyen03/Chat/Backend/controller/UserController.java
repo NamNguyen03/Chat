@@ -3,9 +3,17 @@
  */
 package com.namNguyen03.Chat.Backend.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import com.namNguyen03.Chat.Backend.service.user.UserRequestModels;
+import com.namNguyen03.Chat.Backend.service.user.UserResponseModes;
+import com.namNguyen03.Chat.Backend.service.user.UserService;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -14,10 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "*")
 public class UserController {
 
-	@GetMapping
-	public String test() {
-		return "security fails";
-	}
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/register")
+    public UserResponseModes.RegisterResponseModel register(@Valid @RequestBody UserRequestModels.RegisterRequestModel user){
+        return userService.register(user);
+    }
 }
