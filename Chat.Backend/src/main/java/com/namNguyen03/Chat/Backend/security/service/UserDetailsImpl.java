@@ -2,8 +2,8 @@
  * 
  */
 package com.namNguyen03.Chat.Backend.security.service;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -34,7 +34,7 @@ public class UserDetailsImpl implements UserDetails {
 
     public static UserDetails build(User user) {
     	
-    	Set<SimpleGrantedAuthority> grants = (Set<SimpleGrantedAuthority>) new ArrayList();
+    	Set<SimpleGrantedAuthority> grants = new HashSet<>();
     	grants.add(new SimpleGrantedAuthority("user"));
       
     	return new UserDetailsImpl(user.getUsername(), 

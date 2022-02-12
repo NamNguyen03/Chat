@@ -12,6 +12,11 @@ import lombok.*;
  *
  */
 public class UserResponseModes {
+
+    private UserResponseModes(){
+        
+    }
+
     @AllArgsConstructor
     @NoArgsConstructor
     @Data

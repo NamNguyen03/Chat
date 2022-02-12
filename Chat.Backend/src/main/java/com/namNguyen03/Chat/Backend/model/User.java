@@ -6,6 +6,8 @@ package com.namNguyen03.Chat.Backend.model;
 import java.util.UUID;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -26,6 +28,7 @@ import lombok.NoArgsConstructor;
 @Table(name="users")
 public class User implements MyEntity {
 	@Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
     private UUID uuid;
     private String username;

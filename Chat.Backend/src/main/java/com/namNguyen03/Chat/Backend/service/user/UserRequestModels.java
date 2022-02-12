@@ -10,7 +10,10 @@ import lombok.*;
  * @author nam
  *
  */
+
 public class UserRequestModels {
+
+    private UserRequestModels(){}
 
     @AllArgsConstructor
     @NoArgsConstructor

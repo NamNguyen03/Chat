@@ -12,6 +12,7 @@ import com.namNguyen03.Chat.Backend.service.user.UserResponseModes.RegisterRespo
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,12 +28,18 @@ public class UserServiceImpl extends MyService<User, UserRepo> implements UserSe
     @Autowired
     private ModelMapper mapper;
 
+
+	@Autowired
+	private PasswordEncoder encoder;
+
     @Override
     public RegisterResponseModel register(RegisterRequestModel user) {
         if(userRepository.existsByUsername(user.getUsername())){
             throw new BusinessException("username exists");
         }
-        return mapper.map(super.save(mapper.map(user,User.class)), RegisterResponseModel.class);
+        var rq = mapper.map(user,User.class);
+        rq.setPassword( encoder.encode(user.getPassword()));
+        return mapper.map(super.save(rq), RegisterResponseModel.class);
     }
 
 }
