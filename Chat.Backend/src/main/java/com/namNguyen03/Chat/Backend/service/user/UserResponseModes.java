@@ -26,4 +26,13 @@ public class UserResponseModes {
         private String password;
         private String fullName;
     }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    public static class LoginResponseModel{
+        private String username;
+        private String fullName;
+        private String jwt;
+    }
 }

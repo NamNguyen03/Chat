@@ -28,4 +28,18 @@ public class UserRequestModels {
         @NotBlank
         private String fullName;
     }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    public static class LoginRequestModel{
+        @NotBlank
+        @Email
+        private String username;
+        @NotBlank
+        @Size(min = 6)
+        private String password;
+    }
+
+    
 }

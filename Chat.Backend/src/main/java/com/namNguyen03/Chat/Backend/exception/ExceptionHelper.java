@@ -24,7 +24,8 @@ public class ExceptionHelper {
 	
 	@AllArgsConstructor
 	@Data
-	private class ExceptionResponse{
+	@NoArgsConstructor
+	public static class ExceptionResponse{
 		private int status;
 		private String error;
 		private String message;

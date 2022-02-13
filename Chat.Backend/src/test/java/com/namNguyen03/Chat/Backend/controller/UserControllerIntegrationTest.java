@@ -18,10 +18,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.namNguyen03.Chat.Backend.service.user.UserRequestModels.RegisterRequestModel;
 import com.namNguyen03.Chat.Backend.service.user.UserResponseModes.RegisterResponseModel;
+import com.namNguyen03.Chat.Backend.TestBase;
+import com.namNguyen03.Chat.Backend.exception.BusinessException;
+import com.namNguyen03.Chat.Backend.exception.ExceptionHelper;
 import com.namNguyen03.Chat.Backend.service.user.UserService;
 
 /**
@@ -33,14 +34,12 @@ import com.namNguyen03.Chat.Backend.service.user.UserService;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserControllerIntegrationTest {
+public class UserControllerIntegrationTest extends TestBase {
 	@Autowired
 	private MockMvc mvc;
 
 	@MockBean
 	private UserService userService;
-
-	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@Test
 	public void givenUser_whenValidUserIsUsedToRegister_thenReturnJsonObject() throws Exception {
@@ -49,7 +48,7 @@ public class UserControllerIntegrationTest {
 		Mockito.when(userService.register(rq)).thenReturn(rp);
 
 		MvcResult mvcResult = mvc.perform(post("/api/users/register").content(asJsonString(rq))
-				.contentType(MediaType.APPLICATION_JSON)).andReturn();
+			.contentType(MediaType.APPLICATION_JSON)).andReturn();
 		int status = mvcResult.getResponse().getStatus();
 		assertEquals(200, status);
 		String content = mvcResult.getResponse().getContentAsString();
@@ -80,12 +79,17 @@ public class UserControllerIntegrationTest {
 		assertEquals("fullname should be validation",400, status);
 	}
 
-
-	private String asJsonString(final Object obj) {
-		try {
-			return new ObjectMapper().writeValueAsString(obj);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+	@Test
+	public void givenUser_whenUsernameExistsIsUsedToRegister_thenReturnBadRequest() throws Exception {
+		RegisterRequestModel rq = new RegisterRequestModel("nam@gmail.com", "123123123", "Nam Nguyen");
+		Mockito.when(userService.register(rq)).thenThrow(new BusinessException("username exists"));
+		
+		MvcResult mvcResult = mvc.perform(post("/api/users/register").content(asJsonString(rq))
+				.contentType(MediaType.APPLICATION_JSON)).andReturn();
+		int status = mvcResult.getResponse().getStatus();
+		String content = mvcResult.getResponse().getContentAsString();	
+		assertEquals(400, status);
+		assertEquals("username exists",objectMapper.readValue(content, ExceptionHelper.ExceptionResponse.class).getMessage());
 	}
+	
 }
