@@ -3,12 +3,16 @@
  */
 package com.namNguyen03.Chat.Backend.security.jwt;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import com.namNguyen03.Chat.Backend.model.User;
 import com.namNguyen03.Chat.Backend.security.service.UserDetailsImpl;
 
 /**
@@ -23,13 +27,18 @@ public class JwtUtils {
 
 	private int jwtExpirationMs = 60*3600*5;
 
-	public String generateJwtToken(Authentication authentication) {
+	public String generateJwtToken(Authentication authentication, User user) {
 
 		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
+		Map<String, Object> map = new HashMap<>();
+		map.put("username", user.getUsername());
+		map.put("fullName", user.getFullName());
+		
 		return Jwts.builder()
 				.setSubject((userPrincipal.getUsername()))
 				.setIssuedAt(new Date())
+				.setClaims(map)
 				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
 				.signWith(SignatureAlgorithm.HS512, jwtSecret)
 				.compact();

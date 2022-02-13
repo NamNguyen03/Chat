@@ -2,5 +2,5 @@
 <img src="assets/images/home1.png"  alt="" *ngIf="disableImage2"/>
 
 <p>{{textWelcome}}</p>
-<button type="button" class="btn btn-secondary button-chosen" *ngIf="disableImage2" style="top:300px">Login</button>
+<button [routerLink]="['/login']" type="button" class="btn btn-secondary button-chosen" *ngIf="disableImage2" style="top:300px">Login</button>
 <button [routerLink]="['/register']" type="button" class="btn btn-secondary button-chosen" *ngIf="disableImage2" style="top:350px">Register</button>

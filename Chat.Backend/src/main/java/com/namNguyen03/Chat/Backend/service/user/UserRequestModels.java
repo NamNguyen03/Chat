@@ -21,11 +21,13 @@ public class UserRequestModels {
     public static class RegisterRequestModel{
         @NotBlank
         @Email
+        @Size(max = 64)
         private String username;
         @NotBlank
-        @Size(min = 6)
+        @Size(min = 6, max = 64)
         private String password;
         @NotBlank
+        @Size(max = 64)
         private String fullName;
     }
 
@@ -35,9 +37,10 @@ public class UserRequestModels {
     public static class LoginRequestModel{
         @NotBlank
         @Email
+        @Size(max = 64)
         private String username;
         @NotBlank
-        @Size(min = 6)
+        @Size(min = 6, max = 64)
         private String password;
     }
 

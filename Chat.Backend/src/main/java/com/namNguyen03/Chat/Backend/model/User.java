@@ -5,6 +5,7 @@ package com.namNguyen03.Chat.Backend.model;
 
 import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,8 +32,11 @@ public class User implements MyEntity {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
     private UUID uuid;
+    @Column(columnDefinition="varchar(64)")
     private String username;
+    @Column(columnDefinition="varchar(64)")
     private String password;
+    @Column(columnDefinition="nvarchar(64)")
     private String fullName;
 
 }

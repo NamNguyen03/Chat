@@ -1,7 +1,8 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RegisterRequestModel } from '../api-clients/model/user-models';
-import { UserClientService } from '../api-clients/user/user-client.service';
+import { RegisterRequestModel } from 'src/app/api-clients/model/user-models';
+import { UserClientService } from 'src/app/api-clients/user/user-client.service';
 
 @Component({
   selector: 'app-register',
@@ -15,6 +16,7 @@ export class RegisterComponent implements OnInit {
   public messageErrorRePassword: string ='';
 
   constructor(private formBuilder: FormBuilder,
+    private route: Router,
     private userClientService: UserClientService) { }
 
   ngOnInit(): void {
@@ -45,7 +47,9 @@ export class RegisterComponent implements OnInit {
 
     if(this.formRegister.valid && password ==  rePassword){
       let user = new RegisterRequestModel(username, password, fullName);
-      this.userClientService.register(user).subscribe(rs => console.log(rs));
+      this.userClientService.register(user).subscribe(() => {
+        this.route.navigate(['login']); 
+      });
     } 
   } 
 

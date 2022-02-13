@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { apiInfo } from 'src/app/environment/environment';
-import { RegisterRequestModel, RegisterResponseModel } from '../model/user-models';
+import { LoginRequestModel, LoginResponseModel, RegisterRequestModel, RegisterResponseModel } from '../model/user-models';
 import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 export class UserClientService {
   private apiEndpoint = `${apiInfo.url}users`;
   private apiRegister = `${this.apiEndpoint}/register`;
+  private apiLogin = `${apiInfo.url}token`;
 
   constructor(protected httpClient: HttpClient) { }
 
@@ -16,4 +17,7 @@ export class UserClientService {
     return this.httpClient.post<RegisterResponseModel>(this.apiRegister, user);
   }
   
+  login(loginModel: LoginRequestModel): Observable<LoginResponseModel> {
+    return this.httpClient.post<LoginResponseModel>(this.apiLogin, loginModel);
+  }
 }
