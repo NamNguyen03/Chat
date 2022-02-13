@@ -1,0 +1,16 @@
+<div class="main">
+    <h1 class="text-center fw-bold text-secondary">Login For Chat</h1>
+    <form [formGroup]="formLogin">
+        <div class="mb-3">
+          <label class="form-label text-secondary">Email address</label>
+          <input formControlName="username" type="email" class="form-control" placeholder="Email address"/>
+          <div class="form-text text-danger" *ngIf=" formLogin.controls['username'].errors && !isStart">Username should be email.</div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label text-secondary">Password</label>
+            <input formControlName="password" formControlName="password" type="password" class="form-control" placeholder="password"/>
+            <div class="form-text text-danger" *ngIf=" formLogin.controls['password'].errors && !isStart">Size password should be long than 6 characters.</div>
+        </div>
+        <button type="submit" class="btn btn-secondary button-login" (click)="login()">Login</button>
+      </form>
+</div>

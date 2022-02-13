@@ -1,0 +1,14 @@
+<ul class="nav justify-content-center bg-white p-2">
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="['/room-chat']">All Room Chat</a>
+    </li>
+    <li class="nav-item ">
+        <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Find name room chat..." aria-label="Search">
+            <button class="btn btn-secondary" type="submit">Search</button>
+          </form>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link fw-bold text-secondary" [routerLink]="['/profile']">{{fullName}}</a>
+    </li>
+  </ul>
