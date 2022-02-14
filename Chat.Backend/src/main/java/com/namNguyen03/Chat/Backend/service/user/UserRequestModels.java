@@ -3,7 +3,6 @@ package com.namNguyen03.Chat.Backend.service.user;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
 import lombok.*;
 
 /**

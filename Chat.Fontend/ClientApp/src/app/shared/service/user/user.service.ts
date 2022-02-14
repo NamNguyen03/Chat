@@ -7,9 +7,15 @@ import jwt_decode from 'jwt-decode';
 export class UserService {
   private _$fullName: BehaviorSubject<string> = new BehaviorSubject('');
   public readonly $fullName: Observable<string> = this._$fullName.asObservable();
+  private _$isLogin: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public readonly $isLogin: Observable<boolean> = this._$isLogin.asObservable();
+
   constructor() { 
     this._getFullName();
-    
+    this.getTokenRemainingTime();
+    this.$fullName.subscribe(fullName => {
+      this._$isLogin.next('' != fullName );
+    });
   }
 
   public setJWT(jwt: string): void{
@@ -18,8 +24,13 @@ export class UserService {
   }
 
   private _getFullName(): void {
-    let jwt = localStorage.getItem('jwt');
-   
+    if( this.getTokenRemainingTime() < 0 ){
+      localStorage.setItem('jwt',''); 
+      return;
+    }
+
+    let jwt = localStorage.getItem('jwt');    
+
     if(jwt == null || jwt == undefined) { 
       return;
     }
@@ -35,5 +46,19 @@ export class UserService {
       return null;
     }
   }
+
+  getTokenRemainingTime(): number {
+    let jwt = localStorage.getItem('jwt');
+    if(jwt != null && jwt != undefined) {
+      let exp = this._getDecodedJwt(jwt)?.exp;
+      if(exp != null){
+        let expires = new Date(exp*1000);
+        return expires.getTime() - Date.now();
+      }
+    }
+    return 0;
+  }
+
+  
 }
 

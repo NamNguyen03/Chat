@@ -5,25 +5,34 @@ import { LoginComponent } from './component/login/login.component';
 import { ProfileComponent } from './component/profile/profile.component';
 import { RegisterComponent } from './component/register/register.component';
 import { RoomChatComponent } from './component/room-chat/room-chat.component';
+import { AuthGuard } from './shared/service/AuthGuard/auth.guard';
 
 const routes: Routes = [
   {
-    path: '', component: HomeComponent
+    path: '', 
+    component: HomeComponent
   },
   {
-    path: 'home', component: HomeComponent
+    path: 'home', 
+    component: HomeComponent
   },
   {
-    path:'login', component: LoginComponent
+    path:'login', 
+    component: LoginComponent
   },
   {
-    path:'register', component: RegisterComponent
+    path:'register', 
+    component: RegisterComponent
   },
   {
-    path:'room-chat', component: RoomChatComponent
+    path:'room-chat', 
+    component: RoomChatComponent, 
+    canActivate: [AuthGuard]
   },
   {
-    path:'profile', component: ProfileComponent
+    path:'profile', 
+    component: ProfileComponent,
+    canActivate: [AuthGuard]
   }
 ];
 
