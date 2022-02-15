@@ -27,18 +27,12 @@ public class JwtUtils {
 
 	private int jwtExpirationMs = 60*3600*5;
 
-	public String generateJwtToken(Authentication authentication, User user) {
+	public String generateJwtToken(Authentication authentication) {
 
 		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("username", user.getUsername());
-		map.put("fullName", user.getFullName());
-		
 		return Jwts.builder()
 				.setSubject((userPrincipal.getUsername()))
 				.setIssuedAt(new Date())
-				.setClaims(map)
 				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
 				.signWith(SignatureAlgorithm.HS512, jwtSecret)
 				.compact();

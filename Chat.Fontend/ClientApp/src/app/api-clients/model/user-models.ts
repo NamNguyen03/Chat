@@ -33,3 +33,9 @@ export class LoginResponseModel{
     fullName!: string;
     jwt!: string;
 }
+
+export class ProfileResponseModel{
+    uuid!: string;
+    username!: string;
+    fullName!: string;
+}

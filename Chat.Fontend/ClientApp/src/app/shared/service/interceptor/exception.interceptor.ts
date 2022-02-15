@@ -21,11 +21,19 @@ export class ExceptionInterceptor implements HttpInterceptor {
     ): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(
             catchError((error: HttpErrorResponse) => {
-                if (error.error.status === 400) {
+                if (error.status === 400) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
                         text: error.error.message
+                      })
+                }
+
+                if (error.status === 401) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'unauthorized access error'
                       })
                 }
                 return throwError("");
