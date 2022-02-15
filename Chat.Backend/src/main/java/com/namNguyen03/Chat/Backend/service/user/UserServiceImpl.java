@@ -68,7 +68,7 @@ public class UserServiceImpl extends MyService<User, UserRepo> implements UserSe
             new UsernamePasswordAuthenticationToken(loginModel.getUsername(), loginModel.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication, userOpt.get());
+        String jwt = jwtUtils.generateJwtToken(authentication);
         
         return new LoginResponseModel(userOpt.get().getUsername(), userOpt.get().getFullName(), jwt);
     }

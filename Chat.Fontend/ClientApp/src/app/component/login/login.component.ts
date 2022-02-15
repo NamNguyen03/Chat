@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
     if(this.formLogin.valid){
       this.userClientService.login(new LoginRequestModel(username, password))
         .subscribe(response => {
-          this.userService.setJWT(response.jwt);
+          this.userService.setJWT(response.jwt ,response.fullName);
           this.route.navigate(['room-chat']);
         });
     }

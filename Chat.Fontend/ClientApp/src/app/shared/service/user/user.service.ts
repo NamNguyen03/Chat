@@ -18,25 +18,19 @@ export class UserService {
     });
   }
 
-  public setJWT(jwt: string): void{
+  public setJWT(jwt: string, fullName: string): void{
     localStorage.setItem('jwt', jwt);
+    localStorage.setItem('fullName', fullName);
     this._getFullName();
   }
 
   private _getFullName(): void {
-    if( this.getTokenRemainingTime() < 0 ){
-      localStorage.setItem('jwt',''); 
-      return;
-    }
-
-    let jwt = localStorage.getItem('jwt');    
-
-    if(jwt == null || jwt == undefined) { 
-      return;
-    }
-    let fullName = this._getDecodedJwt(jwt)?.fullName;   
+    let fullName = localStorage.getItem('fullName');
     
-    this._$fullName.next(fullName == undefined ? '' : fullName);
+    if('' != fullName && fullName != null && fullName != undefined) { 
+      this._$fullName.next(fullName);
+    }
+   
   }
 
   private _getDecodedJwt(jwt: string): {username: string, fullName: string, exp: number} | null {
@@ -59,6 +53,9 @@ export class UserService {
     return 0;
   }
 
-  
+  getJWT(): string{
+    let jwt = localStorage.getItem('jwt');
+    return jwt  == null ? '' : jwt ;
+  }
 }
 

@@ -130,7 +130,7 @@ public class UserServiceIntegrationTest {
         )).thenReturn(authentication);
         Mockito.when(userRepo.findByUsername(loginModel.getUsername())).thenReturn(userOpt);
         Mockito.when(encoder.matches("123456", "???encode")).thenReturn(true);
-        Mockito.when(jwtUtils.generateJwtToken(authentication, userOpt.get())).thenReturn("???jwt");
+        Mockito.when(jwtUtils.generateJwtToken(authentication)).thenReturn("???jwt");
 
         assertEquals(userService.login(loginModel), new LoginResponseModel("nam@gmail.com","Nguyen Duc Nam", "???jwt"));
     }
