@@ -35,4 +35,13 @@ public class UserResponseModes {
         private String fullName;
         private String jwt;
     }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    public static class ProfileResponseModel{
+        private UUID uuid;
+        private String username;
+        private String fullName;
+    }
 }

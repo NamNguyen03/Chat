@@ -43,5 +43,4 @@ public class UserRequestModels {
         private String password;
     }
 
-    
 }

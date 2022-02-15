@@ -5,9 +5,7 @@ package com.namNguyen03.Chat.Backend.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.Optional;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,17 +20,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import com.namNguyen03.Chat.Backend.exception.BusinessException;
 import com.namNguyen03.Chat.Backend.model.User;
 import com.namNguyen03.Chat.Backend.repository.UserRepo;
 import com.namNguyen03.Chat.Backend.security.jwt.JwtUtils;
+import com.namNguyen03.Chat.Backend.security.service.UserDetailsImpl;
 import com.namNguyen03.Chat.Backend.service.user.*;
 import com.namNguyen03.Chat.Backend.service.user.UserRequestModels.LoginRequestModel;
 import com.namNguyen03.Chat.Backend.service.user.UserRequestModels.RegisterRequestModel;
 import com.namNguyen03.Chat.Backend.service.user.UserResponseModes.LoginResponseModel;
+import com.namNguyen03.Chat.Backend.service.user.UserResponseModes.ProfileResponseModel;
 import com.namNguyen03.Chat.Backend.service.user.UserResponseModes.RegisterResponseModel;
 
 /**
@@ -137,7 +139,6 @@ public class UserServiceIntegrationTest {
     public void whenPasswordNotEquals_thenThrowBusinessException(){
         expectedEx.expect(BusinessException.class);
         expectedEx.expectMessage("username or password incorrect");
-        
         LoginRequestModel loginModel = new LoginRequestModel("nam@gmail.com", "123456");
         User user = new User();
         user.setPassword("???encode");
@@ -145,5 +146,23 @@ public class UserServiceIntegrationTest {
         Mockito.when(userRepo.findByUsername(loginModel.getUsername())).thenReturn(userOpt);
         Mockito.when(encoder.matches("123456", "???encode")).thenReturn(false);
         userService.login(loginModel);
+    }
+
+    @Test
+    public void whenUserExists_thenReturnProfile(){
+        User user = new User();
+        user.setUsername("nam@gmail.com");
+        user.setPassword("123456");
+        UserDetails userDetails = UserDetailsImpl.build(user);
+        Authentication authentication = Mockito.mock(Authentication.class);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        Mockito.when(SecurityContextHolder.getContext().getAuthentication().getPrincipal()).thenReturn(userDetails);
+        Mockito.when(userRepo.findByUsername("nam@gmail.com")).thenReturn(Optional.of(user));
+        ProfileResponseModel profile = new ProfileResponseModel();
+        profile.setUsername("nam@gmail.com");
+        Mockito.when(mapper.map(user,ProfileResponseModel.class)).thenReturn(profile);
+        assertEquals("nam@gmail.com", userService.getProfile().getUsername());
     }
 }
