@@ -27,6 +27,11 @@ export class UserService {
   private _getFullName(): void {
     let fullName = localStorage.getItem('fullName');
     
+    if(!this.getTokenRemainingTime()){
+      localStorage.setItem('fullName', '');
+      this._$fullName.next('');
+    }
+
     if('' != fullName && fullName != null && fullName != undefined) { 
       this._$fullName.next(fullName);
     }
@@ -41,16 +46,16 @@ export class UserService {
     }
   }
 
-  getTokenRemainingTime(): number {
+  getTokenRemainingTime(): boolean {
     let jwt = localStorage.getItem('jwt');
     if(jwt != null && jwt != undefined) {
       let exp = this._getDecodedJwt(jwt)?.exp;
       if(exp != null){
         let expires = new Date(exp*1000);
-        return expires.getTime() - Date.now();
+        return (expires.getTime() - Date.now()) > 0;
       }
     }
-    return 0;
+    return false;
   }
 
   getJWT(): string{
