@@ -50,10 +50,6 @@ public class UserServiceIntegrationTest {
             return new UserServiceImpl();
         }
 
-        @Bean
-        public ModelMapper initModelMapper() {
-            return new ModelMapper();
-        }
     }
 
 	@Autowired

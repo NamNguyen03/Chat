@@ -31,8 +31,6 @@ import com.namNguyen03.Chat.Backend.service.user.UserService;
  * @author nam
  *
  */
-
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
