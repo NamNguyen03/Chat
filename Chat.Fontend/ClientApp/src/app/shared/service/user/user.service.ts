@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import jwt_decode from 'jwt-decode';
@@ -10,7 +11,7 @@ export class UserService {
   private _$isLogin: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public readonly $isLogin: Observable<boolean> = this._$isLogin.asObservable();
 
-  constructor() { 
+  constructor(private route: Router) { 
     this._getFullName();
     this.getTokenRemainingTime();
     this.$fullName.subscribe(fullName => {
@@ -30,6 +31,8 @@ export class UserService {
     if(!this.getTokenRemainingTime()){
       localStorage.setItem('fullName', '');
       this._$fullName.next('');
+      localStorage.setItem('jwt','');
+      this.route.navigate(['login']);
     }
 
     if('' != fullName && fullName != null && fullName != undefined) { 

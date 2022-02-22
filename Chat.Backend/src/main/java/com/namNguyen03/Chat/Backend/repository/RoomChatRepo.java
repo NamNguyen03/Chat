@@ -10,6 +10,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 import com.namNguyen03.Chat.Backend.model.RoomChat;
 
 /**
@@ -44,6 +46,10 @@ public interface RoomChatRepo extends PagingAndSortingRepository<RoomChat, Integ
       countQuery = "SELECT count(*) FROM room_chat where name like :createBy", 
       nativeQuery = true)
     Page<RoomChat> searchByCreateBy(@Param("createBy") String createBy, Pageable pageable);
+
+    boolean existsByUuid(UUID uuid);
+
+
 
 
 }
